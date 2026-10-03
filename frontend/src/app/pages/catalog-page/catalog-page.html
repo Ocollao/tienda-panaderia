@@ -1,0 +1,49 @@
+<section class="filtros">
+  <mat-form-field appearance="outline" class="buscar">
+    <mat-label>Buscar (ej: marraqueta)</mat-label>
+    <input matInput [(ngModel)]="busqueda" (keyup.enter)="cargar()" placeholder="Pan, torta, leche..." />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Categoría</mat-label>
+    <mat-select [(ngModel)]="categoria" (selectionChange)="cargar()">
+      @for (c of categorias; track c.valor) {
+        <mat-option [value]="c.valor">{{ c.nombre }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="cargar()">
+    <mat-icon>search</mat-icon> Buscar
+  </button>
+</section>
+
+@if (cargando()) {
+  <div class="centro"><mat-spinner diameter="48"></mat-spinner><p>Conectando con Flask...</p></div>
+} @else if (filtrados().length === 0) {
+  <div class="centro">
+    <p>No hay productos. Revisa que el backend esté corriendo en :5000 o agrega desde Inventario.</p>
+  </div>
+} @else {
+  <section class="grid">
+    @for (p of filtrados(); track p.id) {
+      <mat-card class="card">
+        <img mat-card-image [src]="apiFoto(p)" [alt]="p.nombre" loading="lazy" />
+        <mat-card-header>
+          <mat-card-title>{{ p.nombre }}</mat-card-title>
+          <mat-card-subtitle>{{ etiqueta(p.categoria) }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="desc">{{ p.descripcion || 'Producto fresco del día.' }}</p>
+          <div class="fila">
+            <span class="precio">{{ precio(p) }}</span>
+            <mat-chip [highlighted]="p.stock_bajo">Stock: {{ p.stock }}</mat-chip>
+          </div>
+          @if (p.stock_bajo) {
+            <p class="alerta"><mat-icon>warning</mat-icon> ¡Stock bajo!</p>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+  </section>
+}

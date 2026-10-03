@@ -1,0 +1,24 @@
+.filtros {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 16px;
+  .buscar { flex: 1 1 220px; min-width: 200px; }
+}
+.centro { text-align: center; padding: 32px 0; color: #6d4c41; }
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr; // movil
+  @media (min-width: 600px) { grid-template-columns: repeat(2, 1fr); } // tablet
+  @media (min-width: 1024px) { grid-template-columns: repeat(4, 1fr); } // web
+}
+.card {
+  overflow: hidden;
+  img { height: 160px; object-fit: cover; width: 100%; background: #f5f0e8; }
+  .desc { min-height: 40px; color: #5d4037; }
+  .fila { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .precio { font-size: 1.25rem; font-weight: 700; color: #bf360c; }
+  .alerta { color: #d32f2f; display: flex; align-items: center; gap: 4px; font-size: 0.85rem; }
+}

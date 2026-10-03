@@ -1,0 +1,29 @@
+<mat-toolbar color="primary" class="topbar">
+  <button mat-icon-button (click)="menu.toggle()" aria-label="Menú"><mat-icon>menu</mat-icon></button>
+  <span class="logo">🥖 {{ titulo }}</span>
+  <span class="sp"></span>
+  <span class="version">v0.1</span>
+</mat-toolbar>
+
+<mat-sidenav-container class="layout">
+  <mat-sidenav #menu mode="side" opened class="menu" [fixedInViewport]="false">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/catalogo" routerLinkActive="activo">
+        <mat-icon matListItemIcon>storefront</mat-icon>
+        <span matListItemTitle>Catálogo</span>
+      </a>
+      <a mat-list-item routerLink="/inventario" routerLinkActive="activo">
+        <mat-icon matListItemIcon>inventory_2</mat-icon>
+        <span matListItemTitle>Inventario</span>
+      </a>
+    </mat-nav-list>
+    <div class="nota">
+      <p><strong>v0.1</strong> · Esqueleto</p>
+      <p>Ventas y gastos llegan en v0.2 / v0.3</p>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="contenido">
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>
