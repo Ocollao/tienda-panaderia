@@ -1,4 +1,4 @@
-"""App Flask v0.1 - Esqueleto con conexion rapida MySQL/SQLite."""
+"""App Flask v0.2 - Ventas y boletas + inventario."""
 import os
 import sys
 
@@ -21,13 +21,15 @@ def create_app():
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
     from routes.products import products_bp
+    from routes.sales import sales_bp
     app.register_blueprint(products_bp)
+    app.register_blueprint(sales_bp)
 
     @app.get("/api/health")
     def health():
         try:
             db.session.execute(db.text("SELECT 1"))
-            return jsonify({"status": "ok", "db": "ok", "version": "0.1.0"})
+            return jsonify({"status": "ok", "db": "ok", "version": "0.2.0"})
         except Exception as e:  # muestra el error para depurar Dolphin/MySQL rapido
             return jsonify({"status": "ok", "db": "error", "detalle": str(e)[:300]}), 500
 

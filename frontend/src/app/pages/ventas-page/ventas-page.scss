@@ -1,0 +1,17 @@
+.pos { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 900px) { .pos { grid-template-columns: 1.4fr 1fr; align-items: start; } }
+.productos { display: flex; flex-direction: column; gap: 8px; }
+.buscar { width: 100%; }
+.item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 12px;
+  .info { display: flex; flex-direction: column; }
+  .precio { color: #bf360c; font-weight: 700; }
+}
+.carrito mat-card { position: sticky; top: 76px; }
+.linea { display: flex; align-items: center; gap: 8px; padding: 6px 0;
+  .cant { display: flex; align-items: center; }
+}
+.total { display: flex; justify-content: space-between; font-size: 1.3rem; margin: 12px 0; }
+.cobrar { width: 100%; margin-bottom: 4px; }
+.exito { background: #e8f5e9; padding: 8px; border-radius: 8px; }
+.vacio { color: #8d6e63; }
+mat-form-field { width: 100%; margin-top: 8px; }

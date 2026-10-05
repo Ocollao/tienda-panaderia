@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.2.0] - 2026-10-03
+### Agregado
+- Backend: tablas `sales` + `sale_items`, `POST /api/sales` (folio B-000001…, precio desde BD, descuenta stock en transacción, valida stock/medios), `GET /api/sales` con filtro ?desde&hasta, `GET /api/sales/<id>` detalle, `GET /api/sales/resumen` (hoy, 7 días, rango, ticket promedio).
+- Frontend: página **Ventas** (buscador + agregar, carrito con cantidades, medio de pago, vendedor, cobrar), página **Boletas** (KPIs hoy/7 días/ticket, filtro fechas, tabla, detalle con impresión), menú actualizado. Tag `v0.2.0`.
+
 ## [0.1.0] - 2026-10-03
 ### Agregado
 - Esqueleto Flask (health, CRUD /api/products, upload /api/upload, config mysql/sqlite).

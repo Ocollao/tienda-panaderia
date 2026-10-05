@@ -1,4 +1,4 @@
-# 🥖 La Espiga — Tienda Panadería / Pastelería / Minimarket `v0.1.0`
+# 🥖 La Espiga — Tienda Panadería / Pastelería / Minimarket `v0.2.0`
 
 Proyecto simple, vistoso y responsive (móvil / tablet / web).
 
@@ -43,6 +43,11 @@ Marraqueta, hallulla, pan amasado, empanada pino, torta mil hojas, kuchen, berli
 
 ## Roadmap
 - **v0.1 ✅** esqueleto + inventario CRUD + fotos + catálogo responsive
-- **v0.2** ventas + carrito + boletas detalle/resumen + impresión
+- **v0.2 ✅** ventas (carrito + cobrar) + boletas (detalle, resumen, impresión)
 - **v0.3** gastos + dashboard dueño (ventas/gastos/utilidad)
 - **v0.4** roles, stock bajo, Postgres, deploy
+
+## Probar v0.2
+1. En **Ventas**: busca “marraqueta”, agrega 2, elige medio de pago y cobra → folio `B-000001`.
+2. En **Boletas**: ve KPIs, abre el detalle (🔍) e imprime.
+3. API: `POST /api/sales {"items":[{"product_id":1,"cantidad":2}]}` descuenta stock.

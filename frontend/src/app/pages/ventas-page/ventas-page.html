@@ -1,0 +1,74 @@
+<div class="pos">
+  <!-- Productos -->
+  <section class="productos">
+    <mat-form-field appearance="outline" class="buscar">
+      <mat-label>Buscar producto</mat-label>
+      <input matInput [(ngModel)]="busqueda" (keyup.enter)="cargar()" placeholder="Ej: empanada" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="cargar()">
+      <mat-icon>search</mat-icon> Buscar
+    </button>
+
+    @for (p of lista(); track p.id) {
+      <mat-card class="item">
+        <div class="info">
+          <strong>{{ p.nombre }}</strong>
+          <small>{{ p.categoria }} · Stock: {{ p.stock }}</small>
+          <span class="precio">{{ fmt(p.precio) }}</span>
+        </div>
+        <button mat-raised-button color="primary" (click)="carrito.agregar(p)" [disabled]="p.stock <= 0">
+          <mat-icon>add_shopping_cart</mat-icon> Agregar
+        </button>
+      </mat-card>
+    }
+  </section>
+
+  <!-- Carrito -->
+  <section class="carrito">
+    <mat-card>
+      <mat-card-header><mat-card-title>🧾 Carrito ({{ carrito.cantidadTotal() }})</mat-card-title></mat-card-header>
+      <mat-card-content>
+        @if (ultimoFolio()) {
+          <p class="exito">Última venta: <strong>{{ ultimoFolio() }}</strong> ·
+            <a routerLink="/boletas">ver boletas</a></p>
+          <mat-divider></mat-divider>
+        }
+        @if (carrito.lineas().length === 0) {
+          <p class="vacio">Toca “Agregar” en un producto para armar la venta.</p>
+        } @else {
+          @for (l of carrito.lineas(); track l.product_id) {
+            <div class="linea">
+              <div><strong>{{ l.nombre }}</strong><br /><small>{{ fmt(l.precio) }} c/u</small></div>
+              <div class="cant">
+                <button mat-icon-button (click)="carrito.cambiarCantidad(l.product_id, -1)"><mat-icon>remove</mat-icon></button>
+                <span>{{ l.cantidad }}</span>
+                <button mat-icon-button (click)="carrito.cambiarCantidad(l.product_id, 1)"><mat-icon>add</mat-icon></button>
+              </div>
+              <strong>{{ fmt(l.precio * l.cantidad) }}</strong>
+              <button mat-icon-button color="warn" (click)="carrito.quitar(l.product_id)"><mat-icon>delete</mat-icon></button>
+            </div>
+          }
+          <mat-divider></mat-divider>
+          <mat-form-field appearance="outline">
+            <mat-label>Medio de pago</mat-label>
+            <mat-select [(ngModel)]="medioPago">
+              <mat-option value="efectivo">Efectivo</mat-option>
+              <mat-option value="tarjeta">Tarjeta</mat-option>
+              <mat-option value="transferencia">Transferencia</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Vendedor (opcional)</mat-label>
+            <input matInput [(ngModel)]="vendedor" placeholder="Ej: Ana" />
+          </mat-form-field>
+          <div class="total"><span>Total</span><strong>{{ fmt(carrito.total()) }}</strong></div>
+          <button mat-raised-button color="accent" class="cobrar" (click)="cobrar()"
+            [disabled]="cobrando() || carrito.lineas().length === 0">
+            <mat-icon>payments</mat-icon> Cobrar {{ fmt(carrito.total()) }}
+          </button>
+          <button mat-button (click)="carrito.limpiar()">Vaciar</button>
+        }
+      </mat-card-content>
+    </mat-card>
+  </section>
+</div>

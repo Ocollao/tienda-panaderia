@@ -14,3 +14,24 @@ CREATE TABLE IF NOT EXISTS products (
   activo TINYINT(1) DEFAULT 1,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+-- v0.2 Ventas y boletas
+CREATE TABLE IF NOT EXISTS sales (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  folio VARCHAR(20) UNIQUE DEFAULT '',
+  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+  total INT NOT NULL DEFAULT 0,
+  medio_pago VARCHAR(30) DEFAULT 'efectivo',
+  vendedor VARCHAR(80) DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS sale_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  sale_id INT NOT NULL,
+  product_id INT NOT NULL,
+  cantidad INT NOT NULL DEFAULT 1,
+  precio_unit INT NOT NULL DEFAULT 0,
+  subtotal INT NOT NULL DEFAULT 0,
+  FOREIGN KEY (sale_id) REFERENCES sales(id),
+  FOREIGN KEY (product_id) REFERENCES products(id)
+);
