@@ -1,0 +1,24 @@
+.filtros { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+.kpis { display: grid; gap: 12px; grid-template-columns: 1fr; margin-bottom: 16px; }
+@media (min-width: 700px) { .kpis { grid-template-columns: repeat(3, 1fr); } }
+.kpi { padding: 12px 16px; display: flex; flex-direction: column; gap: 2px;
+  small { color: #8d6e63; } strong { font-size: 1.5rem; } span { font-size: .85rem; color: #6d4c41; } }
+.kpi.ventas strong { color: #2e7d32; }
+.kpi.gastos strong { color: #c62828; }
+.kpi.positivo strong { color: #2e7d32; }
+.kpi.negativo strong { color: #c62828; }
+.grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 1000px) { .grid { grid-template-columns: 1fr 1fr; } }
+.panel { padding-bottom: 8px; }
+.linea { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #eee; }
+.mini { width: 100%; }
+.barras { display: flex; gap: 6px; align-items: end; height: 140px; overflow-x: auto; padding-top: 8px; }
+.dia { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 36px; flex: 1; }
+.cols { display: flex; gap: 3px; align-items: end; height: 110px; }
+.bar { width: 12px; border-radius: 4px 4px 0 0; min-height: 3px; }
+.bar.v { background: #66bb6a; }
+.bar.g { background: #ef5350; }
+.leyenda { font-size: .85rem; color: #6d4c41; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+.dot.v { background: #66bb6a; } .dot.g { background: #ef5350; }
+.vacio { color: #8d6e63; }

@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="menu.toggle()" aria-label="Menú"><mat-icon>menu</mat-icon></button>
   <span class="logo">🥖 {{ titulo }}</span>
   <span class="sp"></span>
-  <span class="version">v0.2</span>
+  <span class="version">v0.3</span>
 </mat-toolbar>
 
 <mat-sidenav-container class="layout">
@@ -24,10 +24,18 @@
         <mat-icon matListItemIcon>receipt_long</mat-icon>
         <span matListItemTitle>Boletas</span>
       </a>
+      <a mat-list-item routerLink="/gastos" routerLinkActive="activo">
+        <mat-icon matListItemIcon>payments</mat-icon>
+        <span matListItemTitle>Gastos</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="activo">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Dashboard</span>
+      </a>
     </mat-nav-list>
     <div class="nota">
-      <p><strong>v0.2</strong> · Ventas + Boletas ✓</p>
-      <p>Gastos y dashboard llegan en v0.3</p>
+      <p><strong>v0.3</strong> · Gastos + Dashboard ✓</p>
+      <p>Roles y deploy llegan en v0.4</p>
     </div>
   </mat-sidenav>
 

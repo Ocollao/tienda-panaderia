@@ -14,5 +14,5 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './app.scss'
 })
 export class App {
-  titulo = 'La Espiga · Panadería & Minimarket v0.2';
+  titulo = 'La Espiga · Panadería & Minimarket v0.3';
 }

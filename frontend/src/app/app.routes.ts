@@ -22,5 +22,15 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/boletas-page/boletas-page').then(m => m.BoletasPage),
     title: 'Boletas | Panadería',
   },
+  {
+    path: 'gastos',
+    loadComponent: () => import('./pages/gastos-page/gastos-page').then(m => m.GastosPage),
+    title: 'Gastos | Panadería',
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./pages/dashboard-page/dashboard-page').then(m => m.DashboardPage),
+    title: 'Dashboard | Panadería',
+  },
   { path: '**', redirectTo: 'catalogo' },
 ];

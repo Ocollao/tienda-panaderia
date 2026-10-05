@@ -1,4 +1,4 @@
-"""Modelos v0.2 - Product + Sale/SaleItem (ventas y boletas)."""
+"""Modelos v0.3 - Product + Sale/SaleItem + Expense (gastos)."""
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -83,4 +83,29 @@ class SaleItem(db.Model):
             "cantidad": self.cantidad,
             "precio_unit": self.precio_unit,
             "subtotal": self.subtotal,
+        }
+
+
+class Expense(db.Model):
+    """v0.3 Gasto del negocio (dueño)."""
+    __tablename__ = "expenses"
+
+    id = db.Column(db.Integer, primary_key=True)
+    concepto = db.Column(db.String(120), nullable=False)
+    # insumos | sueldos | arriendo | servicios | otros
+    categoria = db.Column(db.String(30), nullable=False, default="insumos")
+    monto = db.Column(db.Integer, nullable=False, default=0)  # CLP sin decimales
+    fecha = db.Column(db.DateTime, default=datetime.utcnow)
+    nota = db.Column(db.String(255), default="")
+    responsable = db.Column(db.String(80), default="")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "concepto": self.concepto,
+            "categoria": self.categoria,
+            "monto": self.monto,
+            "fecha": self.fecha.isoformat() if self.fecha else None,
+            "nota": self.nota or "",
+            "responsable": self.responsable or "",
         }

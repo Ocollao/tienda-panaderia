@@ -1,0 +1,15 @@
+.resumen { display: grid; gap: 12px; grid-template-columns: 1fr; margin-bottom: 12px; }
+@media (min-width: 700px) { .resumen { grid-template-columns: repeat(3, 1fr); } }
+.kpi { padding: 12px 16px; display: flex; flex-direction: column; gap: 2px;
+  small { color: #8d6e63; } strong { font-size: 1.4rem; color: #bf360c; } span { font-size: .85rem; color: #6d4c41; } }
+.kpi.gasto strong { color: #c62828; }
+.layout { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 1000px) { .layout { grid-template-columns: 380px 1fr; align-items: start; } }
+.form mat-form-field { width: 100%; margin-top: 8px; }
+.fila { display: grid; gap: 8px; grid-template-columns: 1fr 1fr; }
+.acciones { display: flex; gap: 8px; margin-top: 8px; }
+.filtros { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; }
+.tabla-wrap { overflow-x: auto; border-radius: 12px;
+  table { width: 100%; min-width: 640px; } }
+.vacio { color: #8d6e63; margin-top: 12px; }
+small { color: #8d6e63; }

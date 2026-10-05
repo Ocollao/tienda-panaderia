@@ -35,3 +35,14 @@ CREATE TABLE IF NOT EXISTS sale_items (
   FOREIGN KEY (sale_id) REFERENCES sales(id),
   FOREIGN KEY (product_id) REFERENCES products(id)
 );
+
+-- v0.3 Gastos + dashboard dueño
+CREATE TABLE IF NOT EXISTS expenses (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  concepto VARCHAR(120) NOT NULL,
+  categoria VARCHAR(30) NOT NULL DEFAULT 'insumos',
+  monto INT NOT NULL DEFAULT 0,
+  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+  nota VARCHAR(255) DEFAULT '',
+  responsable VARCHAR(80) DEFAULT ''
+);

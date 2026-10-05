@@ -1,0 +1,115 @@
+@if (resumen(); as r) {
+  <section class="resumen">
+    <mat-card class="kpi gasto"><small>Total gastos (filtro)</small><strong>{{ fmt(r.total) }}</strong><span>{{ r.n_gastos }} gastos</span></mat-card>
+    <mat-card class="kpi"><small>Ticket promedio</small><strong>{{ fmt(r.ticket_promedio) }}</strong><span>por gasto</span></mat-card>
+    <mat-card class="kpi"><small>Mayor categoría</small>
+      <strong>{{ r.por_categoria[0]?.categoria || '—' }}</strong>
+      <span>{{ r.por_categoria[0] ? fmt(r.por_categoria[0].total) : '' }}</span>
+    </mat-card>
+  </section>
+}
+
+<div class="layout">
+  <mat-card class="form">
+    <mat-card-header><mat-card-title>💸 {{ editId() ? 'Editar gasto' : 'Nuevo gasto' }}</mat-card-title></mat-card-header>
+    <mat-card-content>
+      <mat-form-field appearance="outline">
+        <mat-label>Concepto *</mat-label>
+        <input matInput [(ngModel)]="concepto" placeholder="Ej: Harina 25kg, sueldo Ana" />
+      </mat-form-field>
+      <div class="fila">
+        <mat-form-field appearance="outline">
+          <mat-label>Categoría</mat-label>
+          <mat-select [(ngModel)]="categoria">
+            @for (c of categorias; track c.valor) {
+              <mat-option [value]="c.valor">{{ c.nombre }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Monto CLP *</mat-label>
+          <input matInput type="number" [(ngModel)]="monto" placeholder="Ej: 28990" />
+        </mat-form-field>
+      </div>
+      <div class="fila">
+        <mat-form-field appearance="outline">
+          <mat-label>Fecha</mat-label>
+          <input matInput type="date" [(ngModel)]="fecha" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Responsable</mat-label>
+          <input matInput [(ngModel)]="responsable" placeholder="Ej: Dueño" />
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="outline">
+        <mat-label>Nota (opcional)</mat-label>
+        <input matInput [(ngModel)]="nota" placeholder="Ej: Factura #123" />
+      </mat-form-field>
+      <div class="acciones">
+        <button mat-raised-button color="primary" (click)="guardar()" [disabled]="guardando()">
+          <mat-icon>save</mat-icon> {{ editId() ? 'Actualizar' : 'Guardar' }}
+        </button>
+        @if (editId()) {
+          <button mat-button (click)="limpiarForm()">Cancelar</button>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <section class="lista">
+    <div class="filtros">
+      <mat-form-field appearance="outline">
+        <mat-label>Desde</mat-label>
+        <input matInput type="date" [(ngModel)]="desde" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Hasta</mat-label>
+        <input matInput type="date" [(ngModel)]="hasta" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Categoría</mat-label>
+        <mat-select [(ngModel)]="categoriaFiltro">
+          <mat-option value="">Todas</mat-option>
+          @for (c of categorias; track c.valor) {
+            <mat-option [value]="c.valor">{{ c.nombre }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="cargar()"><mat-icon>filter_alt</mat-icon> Filtrar</button>
+      <button mat-button (click)="limpiarFiltros()">Limpiar</button>
+    </div>
+
+    <div class="tabla-wrap">
+      <table mat-table [dataSource]="gastos()" class="mat-elevation-z2">
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let g">{{ ffecha(g.fecha) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="concepto">
+          <th mat-header-cell *matHeaderCellDef>Concepto</th>
+          <td mat-cell *matCellDef="let g"><strong>{{ g.concepto }}</strong><br /><small>{{ g.nota }}</small></td>
+        </ng-container>
+        <ng-container matColumnDef="categoria">
+          <th mat-header-cell *matHeaderCellDef>Categoría</th>
+          <td mat-cell *matCellDef="let g">{{ g.categoria }}</td>
+        </ng-container>
+        <ng-container matColumnDef="monto">
+          <th mat-header-cell *matHeaderCellDef>Monto</th>
+          <td mat-cell *matCellDef="let g"><strong>{{ fmt(g.monto) }}</strong></td>
+        </ng-container>
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let g">
+            <button mat-icon-button color="primary" (click)="editar(g)" title="Editar"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button color="warn" (click)="eliminar(g)" title="Eliminar"><mat-icon>delete</mat-icon></button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+      </table>
+    </div>
+    @if (gastos().length === 0) {
+      <p class="vacio">Sin gastos en este filtro. Registra el primero arriba (ej: harina, arriendo).</p>
+    }
+  </section>
+</div>

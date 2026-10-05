@@ -1,4 +1,4 @@
-"""App Flask v0.2 - Ventas y boletas + inventario."""
+"""App Flask v0.3 - Ventas, boletas, gastos y dashboard."""
 import os
 import sys
 
@@ -9,7 +9,7 @@ from flask_cors import CORS
 from config import Config
 from models import db
 
-# Tablas futuras v0.2/v0.3 se importan aqui cuando existan
+# Tablas futuras v0.4 se importan aqui cuando existan
 
 
 def create_app():
@@ -22,14 +22,18 @@ def create_app():
 
     from routes.products import products_bp
     from routes.sales import sales_bp
+    from routes.expenses import expenses_bp
+    from routes.dashboard import dashboard_bp
     app.register_blueprint(products_bp)
     app.register_blueprint(sales_bp)
+    app.register_blueprint(expenses_bp)
+    app.register_blueprint(dashboard_bp)
 
     @app.get("/api/health")
     def health():
         try:
             db.session.execute(db.text("SELECT 1"))
-            return jsonify({"status": "ok", "db": "ok", "version": "0.2.0"})
+            return jsonify({"status": "ok", "db": "ok", "version": "0.3.0"})
         except Exception as e:  # muestra el error para depurar Dolphin/MySQL rapido
             return jsonify({"status": "ok", "db": "error", "detalle": str(e)[:300]}), 500
 
