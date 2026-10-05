@@ -21,10 +21,10 @@ def crear_venta():
     data = request.get_json(force=True, silent=True) or {}
     items = data.get("items") or []
     if not items:
-        return jsonify({"error": "la venta necesita al menos 1 producto"}), 400
+        return jsonify({"error": "La venta necesita al menos 1 producto."}), 400
     medio = (data.get("medio_pago") or "efectivo").lower()
     if medio not in MEDIOS:
-        return jsonify({"error": f"medio_pago debe ser uno de {list(MEDIOS)}"}), 400
+        return jsonify({"error": f"El medio de pago debe ser uno de {list(MEDIOS)}."}), 400
 
     try:
         venta = Sale(medio_pago=medio, vendedor=(data.get("vendedor") or "")[:80], total=0, folio="tmp")
@@ -38,14 +38,14 @@ def crear_venta():
                 pid = int(it.get("product_id"))
                 cant = int(it.get("cantidad", 0))
             except (ValueError, TypeError):
-                raise ValueError("product_id y cantidad deben ser numeros")
+                raise ValueError("El product_id y la cantidad deben ser números.")
             if cant <= 0:
-                raise ValueError("cantidad debe ser mayor a 0")
+                raise ValueError("La cantidad debe ser mayor a 0.")
             prod = db.session.get(Product, pid)
             if not prod or not prod.activo:
-                raise ValueError(f"producto {pid} no existe o esta inactivo")
+                raise ValueError(f"El producto {pid} no existe o está inactivo.")
             if prod.stock < cant:
-                raise ValueError(f"stock insuficiente: {prod.nombre} (queda {prod.stock})")
+                raise ValueError(f"Stock insuficiente: {prod.nombre} (quedan {prod.stock}).")
             prod.stock -= cant
             sub = prod.precio * cant
             total += sub
@@ -60,7 +60,7 @@ def crear_venta():
         return jsonify({"error": str(e)}), 400
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": f"no se pudo guardar: {str(e)[:200]}"}), 500
+        return jsonify({"error": f"No se pudo guardar: {str(e)[:200]}"}), 500
 
 
 @sales_bp.get("/api/sales")

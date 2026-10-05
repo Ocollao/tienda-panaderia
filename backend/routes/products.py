@@ -12,22 +12,22 @@ def _validar(data, parcial=False):
     errores = []
     if not parcial or "nombre" in data:
         if not (data.get("nombre") or "").strip():
-            errores.append("nombre es obligatorio")
+            errores.append("El nombre es obligatorio.")
     if not parcial or "categoria" in data:
         if data.get("categoria") not in ("panaderia", "pasteleria", "minimarket"):
-            errores.append("categoria debe ser panaderia|pasteleria|minimarket")
+            errores.append("La categoría debe ser panaderia, pasteleria o minimarket.")
     if "precio" in data:
         try:
             if int(data["precio"]) < 0:
-                errores.append("precio no puede ser negativo")
+                errores.append("El precio no puede ser negativo.")
         except (ValueError, TypeError):
-            errores.append("precio debe ser numero entero CLP")
+            errores.append("El precio debe ser un número entero en CLP.")
     if "stock" in data:
         try:
             if int(data["stock"]) < 0:
-                errores.append("stock no puede ser negativo")
+                errores.append("El stock no puede ser negativo.")
         except (ValueError, TypeError):
-            errores.append("stock debe ser numero entero")
+            errores.append("El stock debe ser un número entero.")
     return errores
 
 
@@ -113,13 +113,13 @@ def eliminar(pid):
 @products_bp.post("/api/upload")
 def subir_foto():
     if "foto" not in request.files:
-        return jsonify({"error": "envia el archivo como 'foto'"}), 400
+        return jsonify({"error": "Envía el archivo como 'foto'."}), 400
     f = request.files["foto"]
     if not f.filename:
-        return jsonify({"error": "archivo sin nombre"}), 400
+        return jsonify({"error": "El archivo no tiene nombre."}), 400
     ext = f.filename.rsplit(".", 1)[-1].lower()
     if ext not in current_app.config["ALLOWED_EXT"]:
-        return jsonify({"error": f"extension no permitida: {ext}"}), 400
+        return jsonify({"error": f"Extensión no permitida: {ext}."}), 400
     nombre = f"{uuid.uuid4().hex[:8]}_{secure_filename(f.filename)}"
     destino = os.path.join(current_app.config["UPLOAD_FOLDER"], nombre)
     os.makedirs(current_app.config["UPLOAD_FOLDER"], exist_ok=True)

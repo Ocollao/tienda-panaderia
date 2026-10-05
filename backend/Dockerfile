@@ -12,10 +12,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Uploads persistentes (en compose van a un volumen)
-RUN mkdir -p uploads
+RUN mkdir -p uploads && chmod +x entrypoint.sh
 
 ENV PORT=5000
+ENV SKIP_INIT=1
 EXPOSE 5000
 
-# v0.4: gunicorn para produccion (2 workers, chico y barato)
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "--timeout", "60", "wsgi:app"]
+# Inicializa la DB una sola vez y luego inicia gunicorn (2 workers)
+CMD ["./entrypoint.sh"]

@@ -22,12 +22,12 @@ def login():
     username = (data.get("username") or "").strip()
     password = data.get("password") or ""
     if not username or not password:
-        return jsonify({"error": "manda username y password, po"}), 400
+        return jsonify({"error": "Envía el nombre de usuario y la contraseña."}), 400
     u = User.query.filter_by(username=username).first()
     if not u or not u.activo:
-        return jsonify({"error": "usuario no existe o esta desactivado"}), 401
+        return jsonify({"error": "El usuario no existe o está desactivado."}), 401
     if not u.check_password(password):
-        return jsonify({"error": "clave mala, intenta de nuevo"}), 401
+        return jsonify({"error": "Contraseña incorrecta, intenta de nuevo."}), 401
     return jsonify({"ok": True, "user": u.to_dict()})
 
 
@@ -40,18 +40,18 @@ def register():
     password = data.get("password") or ""
     rol = (data.get("rol") or "vendedor").lower()
     if not username or not password:
-        return jsonify({"error": "username y password son obligatorios"}), 400
+        return jsonify({"error": "El nombre de usuario y la contraseña son obligatorios."}), 400
     if rol not in ROLES:
-        return jsonify({"error": f"rol debe ser uno de {list(ROLES)}"}), 400
+        return jsonify({"error": f"El rol debe ser uno de {list(ROLES)}."}), 400
     if len(password) < 4:
-        return jsonify({"error": "la clave debe tener al menos 4 caracteres"}), 400
+        return jsonify({"error": "La contraseña debe tener al menos 4 caracteres."}), 400
     if User.query.count() > 0 and not _es_dueno(data):
-        return jsonify({"error": "solo el dueno puede crear usuarios (manda X-USER/X-ROL)"}), 403
+        return jsonify({"error": "Solo el dueño puede crear usuarios (envía X-USER/X-ROL)."}), 403
     # El primer usuario siempre queda dueno aunque pidan vendedor
     if User.query.count() == 0:
         rol = "dueno"
     if User.query.filter_by(username=username).first():
-        return jsonify({"error": f"el usuario '{username}' ya existe"}), 400
+        return jsonify({"error": f"El usuario '{username}' ya existe."}), 400
     u = User(username=username, rol=rol, activo=True)
     u.set_password(password)
     db.session.add(u)
@@ -70,17 +70,17 @@ def actualizar(uid):
     """Solo dueno cambia rol/activo/clave."""
     data = request.get_json(force=True, silent=True) or {}
     if not _es_dueno(data):
-        return jsonify({"error": "solo el dueno puede editar usuarios"}), 403
+        return jsonify({"error": "Solo el dueño puede editar usuarios."}), 403
     u = User.query.get_or_404(uid)
     if "rol" in data:
         if data["rol"] not in ROLES:
-            return jsonify({"error": f"rol debe ser uno de {list(ROLES)}"}), 400
+            return jsonify({"error": f"El rol debe ser uno de {list(ROLES)}."}), 400
         u.rol = data["rol"]
     if "activo" in data:
         u.activo = bool(data["activo"])
     if data.get("password"):
         if len(data["password"]) < 4:
-            return jsonify({"error": "la clave debe tener al menos 4 caracteres"}), 400
+            return jsonify({"error": "La contraseña debe tener al menos 4 caracteres."}), 400
         u.set_password(data["password"])
     db.session.commit()
     return jsonify(u.to_dict())

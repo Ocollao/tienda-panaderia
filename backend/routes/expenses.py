@@ -18,16 +18,16 @@ def _validar(data, parcial=False):
     errores = []
     if not parcial or "concepto" in data:
         if not (data.get("concepto") or "").strip():
-            errores.append("concepto es obligatorio")
+            errores.append("El concepto es obligatorio.")
     if not parcial or "categoria" in data:
         if data.get("categoria") not in CATEGORIAS:
-            errores.append(f"categoria debe ser una de {list(CATEGORIAS)}")
+            errores.append(f"La categoría debe ser una de {list(CATEGORIAS)}.")
     if "monto" in data or not parcial:
         try:
             if int(data.get("monto", 0)) <= 0:
-                errores.append("monto debe ser mayor a 0 (CLP)")
+                errores.append("El monto debe ser mayor a 0 (CLP).")
         except (ValueError, TypeError):
-            errores.append("monto debe ser numero entero CLP")
+            errores.append("El monto debe ser un número entero en CLP.")
     return errores
 
 
@@ -58,7 +58,7 @@ def crear():
     if data.get("fecha"):
         f = _parse_fecha(data.get("fecha"))
         if not f:
-            return jsonify({"errores": ["fecha debe ser YYYY-MM-DD"]}), 400
+            return jsonify({"errores": ["La fecha debe tener formato YYYY-MM-DD."]}), 400
         fecha = datetime.combine(f, datetime.now().time())
     g = Expense(
         concepto=data["concepto"].strip(),
@@ -93,7 +93,7 @@ def actualizar(gid):
     if data.get("fecha"):
         f = _parse_fecha(data.get("fecha"))
         if not f:
-            return jsonify({"errores": ["fecha debe ser YYYY-MM-DD"]}), 400
+            return jsonify({"errores": ["La fecha debe tener formato YYYY-MM-DD."]}), 400
         g.fecha = datetime.combine(f, g.fecha.time() if g.fecha else datetime.now().time())
     db.session.commit()
     return jsonify(g.to_dict())

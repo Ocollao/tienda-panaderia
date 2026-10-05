@@ -1,4 +1,4 @@
-# 🥖 La Espiga — Tienda Panadería / Pastelería / Minimarket `v0.4.0`
+# 🥖 La Espiga — Tienda Panadería / Pastelería / Minimarket `v0.4.1`
 
 Proyecto simple, vistoso y responsive (móvil / tablet / web).
 
@@ -21,7 +21,7 @@ cd backend
 pip install -r requirements.txt
 Copy-Item .env.example .env   # viene en sqlite; para Dolphin/MySQL o Postgres edita .env
 python app.py
-# test: http://127.0.0.1:5000/api/health  -> {"db":"ok","version":"0.4.0"}
+# test: http://127.0.0.1:5000/api/health  -> {"db":"ok","version":"0.4.1"}
 # productos: http://127.0.0.1:5000/api/products
 ```
 

@@ -1,0 +1,3 @@
+# Conservar saltos de línea LF en scripts que se ejecutan en Linux
+backend/entrypoint.sh text eol=lf
+*.py text eol=lf

@@ -44,7 +44,7 @@ export class UsuariosPage {
     }
     this.auth.registrar(this.nuevoUser().trim(), this.nuevaClave(), this.nuevoRol()).subscribe({
       next: () => {
-        this.snack.open('Usuario creado, bacán ✓', 'OK', { duration: 2000 });
+        this.snack.open('Usuario creado correctamente ✓', 'OK', { duration: 2000 });
         this.nuevoUser.set(''); this.nuevaClave.set(''); this.nuevoRol.set('vendedor');
         this.cargar();
       },

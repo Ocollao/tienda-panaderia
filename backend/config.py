@@ -1,4 +1,4 @@
-"""Configuracion v0.4 - SQLite (rapido) / MySQL-Dolphin / Postgres (deploy)."""
+"""Configuracion v0.4 - SQLite (rápido) / MySQL-Dolphin / Postgres (deploy)."""
 import os
 from dotenv import load_dotenv
 
@@ -33,7 +33,7 @@ def get_database_uri() -> str:
         user = os.getenv("PG_USER", "tienda")
         pw = os.getenv("PG_PASS", "tienda123")
         return f"postgresql+psycopg2://{user}:{pw}@{host}:{port}/{db}"
-    # Fallback rapido: SQLite (no requiere instalar nada)
+    # Fallback rápido: SQLite (no requiere instalar nada)
     base = os.path.dirname(__file__)
     return f"sqlite:///{os.path.join(base, 'tienda.db')}"
 

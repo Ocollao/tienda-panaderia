@@ -6,7 +6,7 @@
     <span class="usuario">{{ auth.actual()?.username }} · {{ auth.actual()?.rol }}</span>
     <button mat-button (click)="salir()"><mat-icon>logout</mat-icon> Salir</button>
   }
-  <span class="version">v0.4</span>
+  <span class="version">v0.4.1</span>
 </mat-toolbar>
 
 <mat-sidenav-container class="layout">
@@ -50,7 +50,7 @@
         }
       </mat-nav-list>
       <div class="nota">
-        <p><strong>v0.4</strong> · Roles + Stock ⚠️ + Deploy ✓</p>
+        <p><strong>v0.4.1</strong> · Roles + Stock + Deploy ✓</p>
         @if (stockBajo() > 0) {
           <p class="stock">⚠️ {{ stockBajo() }} con stock bajo</p>
         }
@@ -63,7 +63,7 @@
         </a>
       </mat-nav-list>
       <div class="nota">
-        <p>Entra con tu usuario, po</p>
+        <p>Inicia sesión con tu usuario</p>
         <p><strong>dueno/dueno123</strong> o <strong>vendedora/venta123</strong></p>
       </div>
     }

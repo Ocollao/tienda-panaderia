@@ -17,7 +17,7 @@ import { ProductsService } from './core/services/products.service';
   styleUrl: './app.scss'
 })
 export class App {
-  titulo = 'La Espiga · Panadería & Minimarket v0.4';
+  titulo = 'La Espiga · Panadería & Minimarket v0.4.1';
   auth = inject(AuthService);
   private products = inject(ProductsService);
   private router = inject(Router);

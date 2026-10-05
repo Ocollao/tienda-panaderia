@@ -27,7 +27,7 @@ export class LoginPage {
 
   entrar() {
     if (!this.username().trim() || !this.password()) {
-      this.snack.open('Escribe tu usuario y clave, po', 'OK', { duration: 2500 });
+      this.snack.open('Escribe tu usuario y tu contraseña.', 'OK', { duration: 2500 });
       return;
     }
     this.entrando.set(true);

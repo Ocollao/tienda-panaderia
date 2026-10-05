@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.1] - 2026-10-05
+### Corregido
+- Arranque en Docker: la inicialización de la base de datos se ejecuta una sola vez (`init_db.py` desde `entrypoint.sh`) en lugar de hacerlo en cada worker de gunicorn, lo que provocaba un error de tabla duplicada en Postgres. Se agregó verificación de salud a la base de datos en `docker-compose.yml`.
+- Textos normalizados a español neutro en mensajes de la API y pantallas (login, usuarios, menú).
+- Verificado con 14 pruebas funcionales sobre despliegue limpio: salud, login por rol, productos, stock bajo, dashboard, venta con descuento de stock, gastos, proxy nginx y usuarios iniciales.
+
 ## [0.4.0] - 2026-10-05
 ### Agregado
 - Backend: modelo `User` + tabla `users` con roles `dueno|vendedor` (clave con hash), `POST /api/auth/login`, `POST /api/auth/register` (bootstrap + solo dueño con headers X-USER/X-ROL), `GET /api/users`, `PUT /api/users/<id>` (rol/activo/clave), seed `dueno/dueno123` + `vendedora/venta123`, `GET /api/products/low-stock` (stock <= stock_min), `GET /api/dashboard` ahora trae `stock_bajo`, `GET /api/health` reporta `0.4.0`.
