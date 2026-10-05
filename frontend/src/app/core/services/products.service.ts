@@ -2,44 +2,47 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product';
-
-// v0.1: URL directa al Flask. En v0.2 se movera a environment.ts
-const API = 'http://127.0.0.1:5000/api';
-const UPLOADS = 'http://127.0.0.1:5000';
+import { apiBase, uploadsBase } from '../config/api';
 
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
   private http = inject(HttpClient);
+  private get API() { return apiBase(); }
+  private get UPLOADS() { return uploadsBase(); }
 
   listar(categoria = '', q = ''): Observable<Product[]> {
     const params: Record<string, string> = {};
     if (categoria) params['categoria'] = categoria;
     if (q) params['q'] = q;
-    return this.http.get<Product[]>(`${API}/products`, { params });
+    return this.http.get<Product[]>(`${this.API}/products`, { params });
   }
 
   crear(data: Partial<Product>): Observable<Product> {
-    return this.http.post<Product>(`${API}/products`, data);
+    return this.http.post<Product>(`${this.API}/products`, data);
   }
 
   actualizar(id: number, data: Partial<Product>): Observable<Product> {
-    return this.http.put<Product>(`${API}/products/${id}`, data);
+    return this.http.put<Product>(`${this.API}/products/${id}`, data);
   }
 
   eliminar(id: number): Observable<{ ok: boolean }> {
-    return this.http.delete<{ ok: boolean }>(`${API}/products/${id}`);
+    return this.http.delete<{ ok: boolean }>(`${this.API}/products/${id}`);
+  }
+
+  stockBajo(): Observable<{ total: number; productos: Product[] }> {
+    return this.http.get<{ total: number; productos: Product[] }>(`${this.API}/products/low-stock`);
   }
 
   subirFoto(file: File): Observable<{ foto_url: string }> {
     const form = new FormData();
     form.append('foto', file);
-    return this.http.post<{ foto_url: string }>(`${API}/upload`, form);
+    return this.http.post<{ foto_url: string }>(`${this.API}/upload`, form);
   }
 
   fotoCompleta(url: string): string {
     if (!url) return 'https://placehold.co/400x250?text=Panaderia';
     if (url.startsWith('http')) return url;
-    return `${UPLOADS}${url}`;
+    return `${this.UPLOADS}${url}`;
   }
 
   formatoCLP(valor: number): string {

@@ -6,11 +6,20 @@
   </div>
 </div>
 
+@if (!cargando() && bajoTotal() > 0) {
+  <p class="alerta-stock">
+    ⚠️ Hay <strong>{{ bajoTotal() }}</strong> con stock bajo.
+    <button mat-button (click)="soloBajo.set(!soloBajo())">
+      {{ soloBajo() ? 'Ver todos' : 'Ver solo bajos' }}
+    </button>
+  </p>
+}
+
 @if (cargando()) {
   <div class="centro"><mat-spinner diameter="48"></mat-spinner></div>
 } @else {
   <div class="tabla-wrap">
-    <table mat-table [dataSource]="productos()" class="mat-elevation-z2">
+    <table mat-table [dataSource]="filtrados()" class="mat-elevation-z2">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell *matCellDef="let p">{{ p.id }}</td>
@@ -29,11 +38,17 @@
       </ng-container>
       <ng-container matColumnDef="stock">
         <th mat-header-cell *matHeaderCellDef>Stock</th>
-        <td mat-cell *matCellDef="let p">{{ p.stock }} @if (p.stock_bajo) { ⚠️ }</td>
+        <td mat-cell *matCellDef="let p">
+          <span [class.bajo]="p.stock_bajo">{{ p.stock }} @if (p.stock_bajo) { ⚠️ }</span>
+          <br /><small>mín {{ p.stock_min }}</small>
+        </td>
       </ng-container>
       <ng-container matColumnDef="acciones">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell *matCellDef="let p">
+          @if (p.stock_bajo) {
+            <button mat-icon-button color="accent" (click)="reponer(p)" title="Reponer +10"><mat-icon>add_box</mat-icon></button>
+          }
           <button mat-icon-button color="primary" (click)="editar(p)" title="Editar"><mat-icon>edit</mat-icon></button>
           <button mat-icon-button color="warn" (click)="eliminar(p)" title="Eliminar"><mat-icon>delete</mat-icon></button>
         </td>

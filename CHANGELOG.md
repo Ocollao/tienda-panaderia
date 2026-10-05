@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0] - 2026-10-05
+### Agregado
+- Backend: modelo `User` + tabla `users` con roles `dueno|vendedor` (clave con hash), `POST /api/auth/login`, `POST /api/auth/register` (bootstrap + solo dueño con headers X-USER/X-ROL), `GET /api/users`, `PUT /api/users/<id>` (rol/activo/clave), seed `dueno/dueno123` + `vendedora/venta123`, `GET /api/products/low-stock` (stock <= stock_min), `GET /api/dashboard` ahora trae `stock_bajo`, `GET /api/health` reporta `0.4.0`.
+- Backend Postgres + deploy: `DB_ENGINE=postgres` por `DATABASE_URL` o `PG_*` (psycopg2), pool chico, `CORS` por `FRONTEND_ORIGIN`, `wsgi.py` + `gunicorn`, `backend/Dockerfile`, `frontend/Dockerfile` (nginx con proxy /api y /uploads), `docker-compose.yml` (postgres + backend + frontend), `schema.sql` con tabla users (nota SERIAL para Postgres).
+- Frontend: login con roles (guarda sesión, redirige dueño→dashboard y vendedor→ventas), `authGuard` + `duenoGuard`, menú según rol + usuario visible + salir, página **Usuarios** (solo dueño: crear, cambiar rol, activar/desactivar), **Inventario** con banner stock bajo + filtro + reponer +10, **Dashboard** con tarjeta stock bajo, `apiBase()` que usa Flask directo en dev y `/api` relativo en Docker.
+- Docs: README v0.4 con probar roles/stock y deploy Docker + Postgres + Render.
+
 ## [0.3.0] - 2026-10-05
 ### Agregado
 - Backend: modelo `Expense` + tabla `expenses`, CRUD `GET/POST /api/expenses`, `PUT/DELETE /api/expenses/<id>` (filtros ?desde&hasta&categoria, validación concepto/categoria/monto), `GET /api/expenses/resumen` (total + por categoría), `GET /api/dashboard` (ventas, gastos, utilidad, margen %, por medio pago, gastos por categoría, top 5 productos, ventas/gastos por día, rango por defecto 30 días).

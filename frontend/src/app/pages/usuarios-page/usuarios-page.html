@@ -1,0 +1,55 @@
+<mat-card class="form">
+  <mat-card-header><mat-card-title>👥 Nuevo usuario (solo dueño)</mat-card-title></mat-card-header>
+  <mat-card-content>
+    <div class="fila">
+      <mat-form-field appearance="outline">
+        <mat-label>Usuario</mat-label>
+        <input matInput [(ngModel)]="nuevoUser" placeholder="Ej: ana" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Clave</mat-label>
+        <input matInput type="password" [(ngModel)]="nuevaClave" placeholder="Mínimo 4" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Rol</mat-label>
+        <mat-select [(ngModel)]="nuevoRol">
+          <mat-option value="vendedor">Vendedor</mat-option>
+          <mat-option value="dueno">Dueño</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" (click)="crear()"><mat-icon>person_add</mat-icon> Crear usuario</button>
+  </mat-card-content>
+</mat-card>
+
+<div class="tabla-wrap">
+  <table mat-table [dataSource]="usuarios()" class="mat-elevation-z2">
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef>Usuario</th>
+      <td mat-cell *matCellDef="let u"><strong>{{ u.username }}</strong></td>
+    </ng-container>
+    <ng-container matColumnDef="rol">
+      <th mat-header-cell *matHeaderCellDef>Rol</th>
+      <td mat-cell *matCellDef="let u">
+        <mat-form-field appearance="outline" class="rol">
+          <mat-select [ngModel]="u.rol" (ngModelChange)="cambiarRol(u, $event)">
+            <mat-option value="vendedor">vendedor</mat-option>
+            <mat-option value="dueno">dueño</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="activo">
+      <th mat-header-cell *matHeaderCellDef>Activo</th>
+      <td mat-cell *matCellDef="let u">{{ u.activo ? '✅' : '❌' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let u">
+        <button mat-button (click)="toggleActivo(u)">{{ u.activo ? 'Desactivar' : 'Activar' }}</button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+  </table>
+</div>

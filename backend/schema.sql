@@ -46,3 +46,21 @@ CREATE TABLE IF NOT EXISTS expenses (
   nota VARCHAR(255) DEFAULT '',
   responsable VARCHAR(80) DEFAULT ''
 );
+
+-- v0.4 Roles simples (dueno | vendedor). En Postgres usa SERIAL en vez de AUTO_INCREMENT:
+-- CREATE TABLE IF NOT EXISTS users (
+--   id SERIAL PRIMARY KEY,
+--   username VARCHAR(80) UNIQUE NOT NULL,
+--   password_hash VARCHAR(255) NOT NULL DEFAULT '',
+--   rol VARCHAR(20) NOT NULL DEFAULT 'vendedor',
+--   activo SMALLINT DEFAULT 1,
+--   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(80) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL DEFAULT '',
+  rol VARCHAR(20) NOT NULL DEFAULT 'vendedor',
+  activo TINYINT(1) DEFAULT 1,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

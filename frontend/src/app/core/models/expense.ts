@@ -27,4 +27,5 @@ export interface Dashboard {
   gastos_por_categoria: { categoria: string; total: number; n: number }[];
   top_productos: { product_id: number; nombre: string; cantidad: number; total: number }[];
   por_dia: { fecha: string; ventas: number; n_boletas: number; gastos: number }[];
+  stock_bajo?: { total: number; productos: { id: number; nombre: string; stock: number; stock_min: number }[] };
 }

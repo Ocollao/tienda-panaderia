@@ -2,41 +2,71 @@
   <button mat-icon-button (click)="menu.toggle()" aria-label="Menú"><mat-icon>menu</mat-icon></button>
   <span class="logo">🥖 {{ titulo }}</span>
   <span class="sp"></span>
-  <span class="version">v0.3</span>
+  @if (auth.logeado()) {
+    <span class="usuario">{{ auth.actual()?.username }} · {{ auth.actual()?.rol }}</span>
+    <button mat-button (click)="salir()"><mat-icon>logout</mat-icon> Salir</button>
+  }
+  <span class="version">v0.4</span>
 </mat-toolbar>
 
 <mat-sidenav-container class="layout">
   <mat-sidenav #menu mode="side" opened class="menu" [fixedInViewport]="false">
-    <mat-nav-list>
-      <a mat-list-item routerLink="/catalogo" routerLinkActive="activo">
-        <mat-icon matListItemIcon>storefront</mat-icon>
-        <span matListItemTitle>Catálogo</span>
-      </a>
-      <a mat-list-item routerLink="/inventario" routerLinkActive="activo">
-        <mat-icon matListItemIcon>inventory_2</mat-icon>
-        <span matListItemTitle>Inventario</span>
-      </a>
-      <a mat-list-item routerLink="/ventas" routerLinkActive="activo">
-        <mat-icon matListItemIcon>point_of_sale</mat-icon>
-        <span matListItemTitle>Ventas</span>
-      </a>
-      <a mat-list-item routerLink="/boletas" routerLinkActive="activo">
-        <mat-icon matListItemIcon>receipt_long</mat-icon>
-        <span matListItemTitle>Boletas</span>
-      </a>
-      <a mat-list-item routerLink="/gastos" routerLinkActive="activo">
-        <mat-icon matListItemIcon>payments</mat-icon>
-        <span matListItemTitle>Gastos</span>
-      </a>
-      <a mat-list-item routerLink="/dashboard" routerLinkActive="activo">
-        <mat-icon matListItemIcon>dashboard</mat-icon>
-        <span matListItemTitle>Dashboard</span>
-      </a>
-    </mat-nav-list>
-    <div class="nota">
-      <p><strong>v0.3</strong> · Gastos + Dashboard ✓</p>
-      <p>Roles y deploy llegan en v0.4</p>
-    </div>
+    @if (auth.logeado()) {
+      <mat-nav-list>
+        <a mat-list-item routerLink="/catalogo" routerLinkActive="activo">
+          <mat-icon matListItemIcon>storefront</mat-icon>
+          <span matListItemTitle>Catálogo</span>
+        </a>
+        <a mat-list-item routerLink="/inventario" routerLinkActive="activo">
+          <mat-icon matListItemIcon>inventory_2</mat-icon>
+          <span matListItemTitle>
+            Inventario
+            @if (stockBajo() > 0) {
+              <span class="alerta" [matBadge]="stockBajo()" matBadgeColor="warn" matBadgeSize="small"> ⚠️</span>
+            }
+          </span>
+        </a>
+        <a mat-list-item routerLink="/ventas" routerLinkActive="activo">
+          <mat-icon matListItemIcon>point_of_sale</mat-icon>
+          <span matListItemTitle>Ventas</span>
+        </a>
+        <a mat-list-item routerLink="/boletas" routerLinkActive="activo">
+          <mat-icon matListItemIcon>receipt_long</mat-icon>
+          <span matListItemTitle>Boletas</span>
+        </a>
+        @if (auth.esDueno()) {
+          <a mat-list-item routerLink="/gastos" routerLinkActive="activo">
+            <mat-icon matListItemIcon>payments</mat-icon>
+            <span matListItemTitle>Gastos</span>
+          </a>
+          <a mat-list-item routerLink="/dashboard" routerLinkActive="activo">
+            <mat-icon matListItemIcon>dashboard</mat-icon>
+            <span matListItemTitle>Dashboard</span>
+          </a>
+          <a mat-list-item routerLink="/usuarios" routerLinkActive="activo">
+            <mat-icon matListItemIcon>group</mat-icon>
+            <span matListItemTitle>Usuarios</span>
+          </a>
+        }
+      </mat-nav-list>
+      <div class="nota">
+        <p><strong>v0.4</strong> · Roles + Stock ⚠️ + Deploy ✓</p>
+        @if (stockBajo() > 0) {
+          <p class="stock">⚠️ {{ stockBajo() }} con stock bajo</p>
+        }
+      </div>
+    } @else {
+      <mat-nav-list>
+        <a mat-list-item routerLink="/login" routerLinkActive="activo">
+          <mat-icon matListItemIcon>login</mat-icon>
+          <span matListItemTitle>Entrar</span>
+        </a>
+      </mat-nav-list>
+      <div class="nota">
+        <p>Entra con tu usuario, po</p>
+        <p><strong>dueno/dueno123</strong> o <strong>vendedora/venta123</strong></p>
+      </div>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content class="contenido">

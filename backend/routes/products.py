@@ -1,4 +1,4 @@
-"""CRUD productos + subida de fotos v0.1."""
+"""CRUD productos + subida de fotos v0.4 (con alerta stock bajo)."""
 import os
 import uuid
 from flask import Blueprint, request, jsonify, current_app
@@ -48,6 +48,18 @@ def listar():
 def obtener(pid):
     p = Product.query.get_or_404(pid)
     return jsonify(p.to_dict())
+
+
+@products_bp.get("/api/products/low-stock")
+def stock_bajo():
+    """v0.4 Alerta stock bajo: productos con stock <= stock_min (solo activos)."""
+    prods = Product.query.filter_by(activo=True).all()
+    bajos = [p for p in prods if (p.stock or 0) <= (p.stock_min if p.stock_min is not None else 5)]
+    bajos.sort(key=lambda p: ((p.stock or 0) - (p.stock_min or 5)))
+    return jsonify({
+        "total": len(bajos),
+        "productos": [p.to_dict() for p in bajos],
+    })
 
 
 @products_bp.post("/api/products")

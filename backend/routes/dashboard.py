@@ -1,8 +1,8 @@
-"""API dashboard dueño v0.3: ventas vs gastos vs utilidad."""
+"""API dashboard dueño v0.4: ventas vs gastos vs utilidad + stock bajo."""
 from collections import Counter, defaultdict
 from datetime import datetime, date, timedelta
 from flask import Blueprint, request, jsonify
-from models import db, Sale, SaleItem, Expense
+from models import db, Sale, SaleItem, Expense, Product
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
@@ -104,4 +104,22 @@ def dashboard():
         "gastos_por_categoria": gastos_cat,
         "top_productos": top,
         "por_dia": dias,
+        "stock_bajo": _stock_bajo_resumen(),
     })
+
+
+def _stock_bajo_resumen():
+    """v0.4: resumen cortito para la tarjeta del dashboard."""
+    try:
+        prods = Product.query.filter_by(activo=True).all()
+        bajos = [p for p in prods if (p.stock or 0) <= (p.stock_min if p.stock_min is not None else 5)]
+        bajos.sort(key=lambda p: ((p.stock or 0) - (p.stock_min or 5)))
+        return {
+            "total": len(bajos),
+            "productos": [
+                {"id": p.id, "nombre": p.nombre, "stock": p.stock, "stock_min": p.stock_min}
+                for p in bajos[:8]
+            ],
+        }
+    except Exception:
+        return {"total": 0, "productos": []}

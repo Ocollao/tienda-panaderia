@@ -25,17 +25,36 @@ export class InventoryPage {
 
   productos = signal<Product[]>([]);
   cargando = signal(true);
+  soloBajo = signal(false);
+  bajoTotal = signal(0);
   columnas = ['id', 'nombre', 'categoria', 'precio', 'stock', 'acciones'];
 
   precio = (v: number) => this.api.formatoCLP(v);
+
+  filtrados() {
+    if (!this.soloBajo()) return this.productos();
+    return this.productos().filter((p) => p.stock_bajo);
+  }
 
   constructor() { this.cargar(); }
 
   cargar() {
     this.cargando.set(true);
     this.api.listar().subscribe({
-      next: (d) => { this.productos.set(d); this.cargando.set(false); },
+      next: (d) => {
+        this.productos.set(d);
+        this.bajoTotal.set(d.filter((p) => p.stock_bajo).length);
+        this.cargando.set(false);
+      },
       error: () => { this.cargando.set(false); this.snack.open('No se pudo conectar con Flask :5000', 'OK', { duration: 3000 }); },
+    });
+  }
+
+  reponer(p: Product) {
+    // Suma rapida +10 al stock bajo, sin abrir el dialogo
+    this.api.actualizar(p.id, { stock: p.stock + 10 }).subscribe({
+      next: () => { this.snack.open(`${p.nombre} +10 al stock ✓`, 'OK', { duration: 2000 }); this.cargar(); },
+      error: () => this.snack.open('No se pudo reponer', 'OK', { duration: 2500 }),
     });
   }
 

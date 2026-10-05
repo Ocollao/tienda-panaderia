@@ -84,6 +84,20 @@
       </mat-card-content>
     </mat-card>
 
+    <mat-card class="panel alerta">
+      <mat-card-header><mat-card-title>⚠️ Stock bajo ({{ d.stock_bajo?.total || 0 }})</mat-card-title></mat-card-header>
+      <mat-card-content>
+        @if (!d.stock_bajo || d.stock_bajo.total === 0) {
+          <p class="vacio">Todo bien, ningún producto bajo el mínimo ✓</p>
+        } @else {
+          @for (p of d.stock_bajo.productos; track p.id) {
+            <div class="linea"><span>{{ p.nombre }} (mín {{ p.stock_min }})</span><strong>{{ p.stock }}</strong></div>
+          }
+          <p class="leyenda"><a routerLink="/inventario">Ir a Inventario a reponer →</a></p>
+        }
+      </mat-card-content>
+    </mat-card>
+
     <mat-card class="panel">
       <mat-card-header><mat-card-title>💸 Gastos por categoría</mat-card-title></mat-card-header>
       <mat-card-content>

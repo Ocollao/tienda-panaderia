@@ -1,0 +1,26 @@
+<div class="login-wrap">
+  <mat-card class="login">
+    <mat-card-header>
+      <mat-card-title>🥖 La Espiga · Entrar</mat-card-title>
+      <mat-card-subtitle>v0.4 con roles: dueño y vendedor</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field appearance="outline">
+        <mat-label>Usuario</mat-label>
+        <input matInput [(ngModel)]="username" (keyup.enter)="entrar()" placeholder="dueno o vendedora" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Clave</mat-label>
+        <input matInput type="password" [(ngModel)]="password" (keyup.enter)="entrar()" placeholder="••••" />
+      </mat-form-field>
+      <button mat-raised-button color="primary" class="entrar" (click)="entrar()" [disabled]="entrando()">
+        <mat-icon>login</mat-icon> Entrar
+      </button>
+      <p class="ayuda">
+        Prueba rápido:<br />
+        • Dueño → <strong>dueno / dueno123</strong> (ve todo)<br />
+        • Vendedora → <strong>vendedora / venta123</strong> (ventas y boletas)
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

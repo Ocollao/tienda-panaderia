@@ -1,8 +1,11 @@
-"""Modelos v0.3 - Product + Sale/SaleItem + Expense (gastos)."""
+"""Modelos v0.4 - Product + Sale/SaleItem + Expense + User (roles)."""
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
+
+ROLES = ("dueno", "vendedor")
 
 
 class Product(db.Model):
@@ -108,4 +111,33 @@ class Expense(db.Model):
             "fecha": self.fecha.isoformat() if self.fecha else None,
             "nota": self.nota or "",
             "responsable": self.responsable or "",
+        }
+
+
+class User(db.Model):
+    """v0.4 Usuario simple con rol (dueno | vendedor). Clave con hash."""
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False, default="")
+    rol = db.Column(db.String(20), nullable=False, default="vendedor")  # dueno|vendedor
+    activo = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def set_password(self, raw: str):
+        self.password_hash = generate_password_hash(raw or "")
+
+    def check_password(self, raw: str) -> bool:
+        if not self.password_hash:
+            return False
+        return check_password_hash(self.password_hash, raw or "")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "rol": self.rol,
+            "activo": bool(self.activo),
+            "created_at": self.created_at.isoformat() if self.created_at else None,
         }

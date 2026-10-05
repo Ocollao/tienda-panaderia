@@ -1,0 +1,6 @@
+.form { margin-bottom: 12px; }
+.fila { display: grid; gap: 8px; grid-template-columns: 1fr; }
+@media (min-width: 700px) { .fila { grid-template-columns: 1fr 1fr 160px; } }
+.tabla-wrap { overflow-x: auto; border-radius: 12px;
+  table { width: 100%; min-width: 560px; } }
+.rol { width: 140px; }
